@@ -286,18 +286,7 @@
   .wave span:nth-child(5){height:7px;animation-delay:.6s}
   @keyframes wave { 0%,100%{transform:scaleY(.3)} 50%{transform:scaleY(1)} }
 
-  /* 扫码直达：隐藏长引导区避免留白，保留月份网格可切换 */
-  body.direct .about, body.direct .forall, body.direct .wuyong,
-  body.direct .leadin, body.direct .section-label, body.direct .intro-text,
-  body.direct .progress-hint { display: none !important; }
-  /* 直达模式：压缩封面，让卡片贴近顶部 */
-  body.direct .hero { height: auto; min-height: 0; padding: 36px 24px 12px; }
-  body.direct .scroll-hint { display: none; }
-  body.direct .hero .brand { margin-bottom: 12px; letter-spacing: 6px; }
-  body.direct .hero h1 { font-size: 30px; margin-bottom: 10px; }
-  body.direct .hero .month-label { margin-bottom: 12px; }
-  body.direct .hero .line { margin: 0 auto 12px; }
-  body.direct .hero .sub { display: none; }
+  /* 扫码直达：保留完整页面（引导区/互动/网格/所有月份均显示），仅自动展开并定位到当月 */
 
   /* 彩蛋 */
   .easter-egg {
@@ -623,10 +612,6 @@ months.forEach((m) => {
 function showMonth(n) {
   const target = document.getElementById('track-' + n);
   if (target) {
-    // 直达模式：一次只展开当月，其余折叠不占位；网格仍可切换
-    if (document.body.classList.contains('direct')) {
-      document.querySelectorAll('.track').forEach(t => { if (t !== target) t.style.display = 'none'; });
-    }
     // 如果已经显示过了，只是滚动过去
     if (target.style.display === 'block') {
       target.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -751,9 +736,8 @@ function setMonthTheme(m) {
   monthLabel.textContent = m.month + '月 · ' + m.theme;
 }
 if (activeMonth) {
-  // 扫书签进来：自动展开对应月并定位；保留网格可切换，其余月份折叠不占位
+  // 扫书签进来：保留完整页面（引导区/互动/网格/所有月份均在），仅自动展开当月并定位
   document.body.classList.add('direct');
-  document.querySelectorAll('.track').forEach(t => { if (t.id !== 'track-' + activeMonth) t.style.display = 'none'; });
   setTimeout(() => showMonth(activeMonth), 800);
 }
 
