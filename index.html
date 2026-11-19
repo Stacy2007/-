@@ -736,9 +736,13 @@ function setMonthTheme(m) {
   monthLabel.textContent = m.month + '月 · ' + m.theme;
 }
 if (activeMonth) {
-  // 扫书签进来：保留完整页面（引导区/互动/网格/所有月份均在），仅自动展开当月并定位
+  // 扫书签进来：完整页面从最开头（封面）开始，不自动跳到当月卡片；
+  // 仅同步当月主题色与封面月份标签，并在网格高亮当月
   document.body.classList.add('direct');
-  setTimeout(() => showMonth(activeMonth), 800);
+  const dm = months.find(x => x.month === activeMonth);
+  if (dm) setMonthTheme(dm);
+  const dc = document.querySelector('.month-cell[data-month="' + activeMonth + '"]');
+  if (dc) dc.classList.add('active');
 }
 
 if ('IntersectionObserver' in window) {
