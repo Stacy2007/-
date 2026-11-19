@@ -743,6 +743,10 @@ if (activeMonth) {
   if (dm) setMonthTheme(dm);
   const dc = document.querySelector('.month-cell[data-month="' + activeMonth + '"]');
   if (dc) dc.classList.add('active');
+  // 直達模式：直接載入全部區塊，避免靠滾動漸顯造成的米白空白
+  requestAnimationFrame(() => {
+    document.querySelectorAll('.section-label, .intro-text, footer, .about, .forall, .wuyong, .leadin, .track').forEach(el => el.classList.add('visible'));
+  });
 }
 
 if ('IntersectionObserver' in window) {
